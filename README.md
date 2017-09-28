@@ -1,6 +1,6 @@
 # Webpack best practices
 
-## Multiple entrypoints
+## Using Multiple entrypoints
 When a website consists of many pages with different functionality, it will be useful to have several entry points to load only the required js on the pages.
 
 ```js
@@ -19,7 +19,7 @@ module.exports = {
 }
 ```
 
-## No errors plugin
+## Using No errors plugin
 With NoErrorsPlugin webpack do not generate files when build is filed
 
 ```js
@@ -32,7 +32,7 @@ module.exports = {
 }
 ```
 
-## CommonsChunkPlugin / common.js
+## Using CommonsChunkPlugin / common.js
 Extracts common part from our endpoints into one file
 
 ```js
@@ -55,14 +55,14 @@ module.exports = {
 }
 ```
 
-## Multi-compilation
-TODO: Description
+## Using Multi-compilation
+Runs a few builds in one time. Multi-compilation is useful when your have diffrent builds. For example: with diffrent locales or for diffrent browsers.
 
 ```js
 module.exports = [{}, {}, {}]
 ```
 
-## Dynamic require
+## Using Dynamic require
 TODO: Description
 
 ```js
@@ -85,7 +85,7 @@ module.exports = {
 }
 ```
 
-## Context replacement plugins
+## Using Context replacement plugins
 TODO: Description
 
 ```js
@@ -98,7 +98,7 @@ module.exports = {
 ```
 
 ## Working with CDN's
-TODO: Description
+Integrates CDN library in webpack build. Add possibility to require CDN library.
 
 ```js
 module.exports = {
@@ -109,7 +109,21 @@ module.exports = {
 },
 ```
 
-## Babel exclude
+## Using ProvidePlugin
+Decreasing build size and simplify library importing.
+
+```js
+module.exports = {
+  //...
+  plugins: [
+   new webpack.ProvidePlugin({
+     pluck: 'lodash/collection/pluck',
+   }),
+  ],
+}
+```
+
+## Using Babel exclude
 TODO: Description
 
 ```js
@@ -127,7 +141,7 @@ module.exports = {
 },
 ```
 
-## Long caching
+## Using Long caching
 TODO: Description
 
 ```js
@@ -139,4 +153,11 @@ module.exports = {
     chunkFilename: '[id].js',
     library: '[name]'
   }
+```
+
+## Using Hot module replacement
+TODO: Description
+
+```js
+ //TODO: add js 
 ```
