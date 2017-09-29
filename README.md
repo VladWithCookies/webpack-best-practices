@@ -59,34 +59,45 @@ module.exports = {
 Runs a few builds in one time. Multi-compilation is useful when your have diffrent builds. For example: with diffrent locales or for diffrent browsers.
 
 ```js
-module.exports = [{}, {}, {}]
+module.exports = [{
+  //...
+}, 
+{
+  //...
+}, 
+{
+  //...
+}]
 ```
 
 ## Using Dynamic require
-TODO: Description
+Require modules in runtime. When we actualy need it.
 
 ```js
+//app.js
+require.ensure([], function(require) {
+  let login = require('./login')
+
+  login()
+}, 'auth') // => 1.auth.js
+
+require.ensure([], function(require) {
+  let logout = require('./login')
+
+  logout()
+}, 'auth') // => 1.auth.js
+  
+//webpack.config.js  
 module.exports = {
+  //...
   output: {
     publicPath: '/',
   },
-
-  require.ensure([], function(require) {
-    let login = require('./login')
-
-    login()
-  }, 'auth') // => 1.auth.js
-
-  require.ensure([], function(require) {
-    let logout = require('./login')
-
-    logout()
-  }, 'auth') // => 1.auth.js
 }
 ```
 
 ## Using Context replacement plugins
-TODO: Description
+Decrease build size by excluding useless modules of third party library. For example: exclude useless locales of momemnt.js
 
 ```js
 module.exports = {
@@ -124,7 +135,7 @@ module.exports = {
 ```
 
 ## Using Babel exclude
-TODO: Description
+Excluding third party libraries from babel processing.
 
 ```js
 module.exports = {
@@ -134,22 +145,20 @@ module.exports = {
       exclude: /\/node_modules\//,
       loader: 'babel'
     }],
-
-    //noParse: /angular\/angulad.js/
     noParse: /\/node_modules\/(angular|jquery)/
   },
 },
 ```
 
 ## Using Long caching
-TODO: Description
+Adds hash to filename.
 
 ```js
 module.exports = {
   output: {
     path: __dirname + '/public/assets',
     publicPath: '/assets/',
-    filename: '[name].[chunkhash].js',
+    filename: '[name].[chunkhash].js', //'chunkhash' means hash for this file. 'hash' means hash for all build
     chunkFilename: '[id].js',
     library: '[name]'
   }
