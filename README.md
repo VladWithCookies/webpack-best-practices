@@ -218,8 +218,27 @@ module.exports = {
 ```
 
 ## Using hot module replacement
-TODO: Description
+```js
+module.exports = {
+  entry: {
+    main: ['webpack-dev-server/client', 'webpack-dev-server/hot/dev-server', './main']
+  }
+  
+  //...
+  
+  devServer: {
+    contentBase: __dirname + '/backend',
+    hot: true
+  }
+}
+```
+Using with ExtractTextPlugin
 
 ```js
- //TODO: add js 
+module.exports = {
+  //...
+  plugins: {
+   new ExtractTextPlugin('[name].css', {allChunks: true, disable: process.env.NODE_ENV=='development'})
+  }
+}
 ```
