@@ -70,32 +70,6 @@ module.exports = [{
 }]
 ```
 
-## Using dynamic require
-Require modules in runtime. When we actualy need it.
-
-```js
-//app.js
-require.ensure([], function(require) {
-  let login = require('./login')
-
-  login()
-}, 'auth') // => 1.auth.js
-
-require.ensure([], function(require) {
-  let logout = require('./login')
-
-  logout()
-}, 'auth') // => 1.auth.js
-  
-//webpack.config.js  
-module.exports = {
-  //...
-  output: {
-    publicPath: '/',
-  },
-}
-```
-
 ## Using ContextReplacementPlugin
 Decrease build size by excluding useless modules of third party library. For example: exclude useless locales of momemnt.js
 
