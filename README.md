@@ -1,6 +1,6 @@
 # Webpack best practices
 
-## Using Multiple entrypoints
+## Using multiple entrypoints
 When a website consists of many pages with different functionality, it will be useful to have several entry points to load only the required js on the pages.
 
 ```js
@@ -19,7 +19,7 @@ module.exports = {
 }
 ```
 
-## Using No errors plugin
+## Using NoErrorsPlugin
 With NoErrorsPlugin webpack do not generate files when build is filed
 
 ```js
@@ -32,7 +32,7 @@ module.exports = {
 }
 ```
 
-## Using CommonsChunkPlugin / common.js
+## Using CommonsChunkPlugin/common.js
 Extracts common part from our endpoints into one file
 
 ```js
@@ -55,7 +55,7 @@ module.exports = {
 }
 ```
 
-## Using Multi-compilation
+## Using multi-compilation
 Runs a few builds in one time. Multi-compilation is useful when your have diffrent builds. For example: with diffrent locales or for diffrent browsers.
 
 ```js
@@ -70,7 +70,7 @@ module.exports = [{
 }]
 ```
 
-## Using Dynamic require
+## Using dynamic require
 Require modules in runtime. When we actualy need it.
 
 ```js
@@ -96,7 +96,7 @@ module.exports = {
 }
 ```
 
-## Using Context replacement plugins
+## Using ContextReplacementPlugin
 Decrease build size by excluding useless modules of third party library. For example: exclude useless locales of momemnt.js
 
 ```js
@@ -134,7 +134,60 @@ module.exports = {
 }
 ```
 
-## Using Babel exclude
+## Using compile-to-JS languages
+Here's how you can teach webpack to load CoffeeScript and Facebook JSX+ES6 support (you must npm install babel-loader coffee-loader):
+
+```js
+// webpack.config.js
+module.exports = {
+  entry: './main.js',
+  output: {
+    filename: 'bundle.js'       
+  },
+  module: {
+    loaders: [
+      { test: /\.coffee$/, loader: 'coffee-loader' },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'react']
+        }
+      }
+    ]
+  }
+};
+```
+
+To enable requiring files without specifying the extension, you must add a resolve.extensions parameter specifying which files webpack searches for:
+
+```js
+// webpack.config.js
+module.exports = {
+  entry: './main.js',
+  output: {
+    filename: 'bundle.js'       
+  },
+  module: {
+    loaders: [
+      { test: /\.coffee$/, loader: 'coffee-loader' },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'react']
+        }
+      }
+    ]
+  },
+  resolve: {
+    // you can now require('file') instead of require('file.coffee')
+    extensions: ['', '.js', '.json', '.coffee'] 
+  }
+};
+```
+
+## Using babel exclude
 Excluding third party libraries from babel processing.
 
 ```js
@@ -150,7 +203,7 @@ module.exports = {
 },
 ```
 
-## Using Long caching
+## Using long caching
 Adds hash to filename.
 
 ```js
@@ -164,7 +217,7 @@ module.exports = {
   }
 ```
 
-## Using Hot module replacement
+## Using hot module replacement
 TODO: Description
 
 ```js
