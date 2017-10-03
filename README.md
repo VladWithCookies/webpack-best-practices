@@ -32,7 +32,7 @@ module.exports = {
 }
 ```
 
-## Using CommonsChunkPlugin/common.js
+## Using CommonsChunkPlugin
 Extracts common part from our endpoints into one file
 
 ```js
@@ -131,6 +131,25 @@ module.exports = {
 
 ## Using ProvidePlugin
 Decreasing build size and simplify library importing.
+The ProvidePlugin makes a package available as a variable in every module compiled through webpack. If webpack sees that variable used, it will include the given package in the final bundle.
+
+```js
+  const path = require('path');
+
+  module.exports = {
+    entry: './src/index.js',
+    output: {
+      filename: 'bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    }
+    },
+    plugins: [
+      new webpack.ProvidePlugin({
+        lodash: 'lodash'
+      })
+    ]
+  };
+```
 
 ```js
 module.exports = {
