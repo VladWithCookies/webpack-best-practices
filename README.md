@@ -55,6 +55,41 @@ module.exports = {
 }
 ```
 
+It's also good practice to extract third-party libraries, such as ```lodash``` or ```react```, to a separate vendor chunk as they are less likely to change than our local source code. This step will allow clients to request even less from the server to stay up to date. This can be done by using a combination of a new entry point along with another CommonsChunkPlugin instance.
+
+```js
+var path = require('path');
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  entry: './src/index.js',
+  entry: {
+    main: './src/index.js',
+    vendor: [
+      'lodash'
+    ]
+  },
+  plugins: [
+    new CleanWebpackPlugin(['dist']),
+    new HtmlWebpackPlugin({
+      title: 'Caching'
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'runtime'
+    })
+  ],
+  output: {
+    filename: '[name].[chunkhash].js',
+    path: path.resolve(__dirname, 'dist')
+  }
+};
+```
+
 ## Using multi-compilation
 Runs a few builds in one time. Multi-compilation is useful when your have diffrent builds. For example: with diffrent locales or for diffrent browsers.
 
@@ -192,6 +227,7 @@ module.exports = {
 ```
 
 ## Using hot module replacement
+
 ```js
 module.exports = {
   entry: {
@@ -215,4 +251,74 @@ module.exports = {
    new ExtractTextPlugin('[name].css', {allChunks: true, disable: process.env.NODE_ENV=='development'})
   }
 }
+```
+
+## Using HtmlWebpackPlugin
+If we changed the name of one of our entry points, or added a new one then our generated bundles would be renamed on a build, but our index.html file would still reference the old names. HtmlWebpackPlugin can fix that by replacing our index.html file with a newly generated one.
+
+```js
+  const path = require('path');
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+  module.exports = {
+    entry: {
+      app: './src/index.js',
+      print: './src/print.js'
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+       title: 'Output Management'
+      })
+    ],
+    output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    }
+  };
+```
+
+## Using CleanWebpackPlugin
+In general it's good practice to clean the ```/dist``` folder before each build, so that only used files will be generated.
+
+```js
+  const path = require('path');
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+  const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+  module.exports = {
+    entry: {
+      app: './src/index.js',
+      print: './src/print.js'
+    },
+    plugins: [
+      new CleanWebpackPlugin(['dist']),
+      new HtmlWebpackPlugin({
+        title: 'Output Management'
+      })
+    ],
+    output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    }
+  }
+```
+
+## Using UglifyJSPlugin
+Minifier that supports dead code removal 
+
+```js
+const path = require('path');
+  const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  }
+  },
+  plugins: [
+    new UglifyJSPlugin()
+  ]
+};
 ```
